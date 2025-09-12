@@ -6,6 +6,7 @@ A command-line tool for splitting PDF files based on JSON configuration. You can
 
 - Split PDF files into smaller chunks based on page count
 - JSON configuration for easy customization
+- Automatic configuration file loading
 - Simple command-line interface
 - Preserves PDF quality and structure
 - Automatic naming of output files
@@ -31,87 +32,116 @@ A command-line tool for splitting PDF files based on JSON configuration. You can
 ### Basic Usage
 
 ```bash
-pdf_splitter <input.pdf> <config.json>
+pdf_splitter <input.pdf>
 ```
 
-### Configuration File
+### Configuration Files
 
-Create a JSON configuration file that specifies how many pages each split should contain:
+The tool automatically searches for configuration files in the following order:
+
+1. **Executable directory**: `<executable_name>.json` (same directory as the executable)
+2. **Home directory**: `~/.pdf_splitter.json`
+
+If no configuration file is found, the default value of 100 pages per split is used.
+
+### Configuration File Format
+
+Create a JSON configuration file with the following format:
 
 ```json
-{"pages": 30}
+{
+  "pages": 30
+}
 ```
 
 This configuration will split the PDF every 30 pages.
 
 ### Examples
 
-1. **Split a document every 10 pages:**
+1. **Create a configuration file for 10 pages per split:**
 
-   Create `config.json`:
+   Create `pdf_splitter.json` in your home directory:
    ```json
-   {"pages": 10}
+   {
+     "pages": 10
+   }
    ```
 
    Run the command:
    ```bash
-   pdf_splitter document.pdf config.json
+   pdf_splitter document.pdf
    ```
 
-   Output files: `document_001.pdf`, `document_002.pdf`, etc.
+   Output files: `document_1.pdf`, `document_2.pdf`, etc.
 
-2. **Split a large document every 50 pages:**
+2. **Create a configuration file for 50 pages per split:**
 
-   Create `config.json`:
+   Create a configuration file next to the executable:
    ```json
-   {"pages": 50}
+   {
+     "pages": 50
+   }
    ```
 
    Run the command:
    ```bash
-   pdf_splitter large_document.pdf config.json
+   pdf_splitter large_document.pdf
    ```
 
 3. **Split into individual pages:**
 
-   Create `config.json`:
+   Create `~/.pdf_splitter.json`:
    ```json
-   {"pages": 1}
+   {
+     "pages": 1
+   }
    ```
 
    Run the command:
    ```bash
-   pdf_splitter document.pdf config.json
+   pdf_splitter document.pdf
    ```
 
 ### Output
 
-The tool will create numbered output files in the same directory as the input PDF:
-- `{filename}_001.pdf` - First split
-- `{filename}_002.pdf` - Second split
-- `{filename}_003.pdf` - Third split
+The tool will create a folder named `{filename}-parts` in the same directory as the input PDF, and save numbered output files inside that folder:
+- `{filename}-parts/{filename}_001.pdf` - First split
+- `{filename}-parts/{filename}_002.pdf` - Second split
+- `{filename}-parts/{filename}_003.pdf` - Third split
 - ... and so on
+
+For example, if you split `document.pdf`, the output will be:
+- `document-parts/document_001.pdf`
+- `document-parts/document_002.pdf`
+- `document-parts/document_003.pdf`
 
 ## Command Line Options
 
 ```
 A tool to split PDFs based on JSON configuration
 
-Usage: pdf_splitter <pdf> <config>
+Usage: pdf_splitter <pdf>
 
 Arguments:
   <pdf>     Input PDF file path
-  <config>  JSON configuration file path
 
 Options:
   -h, --help     Print help
   -V, --version  Print version
 ```
 
+## Configuration File Priority
+
+The tool searches for configuration files in this order:
+
+1. **Executable-specific config**: `<executable_name>.json` in the same directory as the executable
+2. **Global user config**: `~/.pdf_splitter.json` in the user's home directory
+3. **Default**: If no configuration file is found, uses 100 pages per split
+
 ## Requirements
 
 - Valid PDF file as input
-- JSON configuration file with `pages` field
+- Optional JSON configuration file with `pages` field
 - Write permissions in the output directory
 
 ## Error Handling
@@ -146,17 +176,37 @@ This project is licensed under the terms specified in the LICENSE file.
 
 このツールは、JSON設定ファイルに基づいてPDFファイルを分割します。
 
-### 使用例
+### 設定ファイルの場所
 
-設定ファイル（JSON）に以下のように指定：
+設定ファイルは以下の順番で自動的に検索されます：
+
+1. **実行ファイルと同じディレクトリ**: `実行ファイル名.json`
+2. **ホームディレクトリ**: `~/.pdf_splitter.json`
+
+設定ファイルが見つからない場合は、デフォルトで100ページごとに分割されます。
+
+### 設定例
+
+ホームディレクトリに `~/.pdf_splitter.json` を作成：
 ```json
-{"pages": 30}
+{
+  "pages": 30
+}
 ```
 
-そのJSONファイルを読んで、30ページずつPDFを区切ります。
+このJSONファイルを読んで、30ページずつPDFを区切ります。
 
 ### 実行方法
 
 ```bash
-pdf_splitter document.pdf config.json
+pdf_splitter document.pdf
 ```
+
+設定ファイルの指定は不要です。自動的に検索されます。
+
+### 出力ファイル
+
+`document.pdf`を分割すると、`document-parts`フォルダが作成され、その中に以下のようなファイルが保存されます：
+- `document-parts/document_001.pdf`
+- `document-parts/document_002.pdf`
+- `document-parts/document_003.pdf`
