@@ -24,3 +24,12 @@ target
 # Added by cargo
 
 /target
+
+# macOS app bundle
+*.app
+
+# Release artifacts
+/release-macos
+/release-win
+release-macos.zip
+release-win.zip

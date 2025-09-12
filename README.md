@@ -210,3 +210,68 @@ pdf_splitter document.pdf
 - `document-parts/document_001.pdf`
 - `document-parts/document_002.pdf`
 - `document-parts/document_003.pdf`
+
+## macOSアプリバンドルのビルド
+
+macOS用のアプリケーションバンドル（.app）を作成する場合は、以下のコマンドを使用してください：
+
+### ビルド方法
+
+```bash
+# アプリバンドルをビルド
+make build
+
+# または直接スクリプトを実行
+./build_macos_app.sh
+```
+
+### インストール
+
+```bash
+# ビルドしてアプリケーションフォルダにインストール
+make install
+
+# または直接スクリプトを実行
+./build_macos_app.sh --install
+```
+
+### 作成されるバンドル構造
+
+```text
+pdf_splitter.app
+└── Contents
+    ├── Info.plist
+    └── MacOS
+        ├── pdf_splitter      (Objective-Cラッパー)
+        └── pdf_splitter_bin  (Rustバイナリ)
+```
+
+### 利用可能なMakeコマンド
+
+- `make build` - macOSアプリバンドルをビルド
+- `make install` - ビルドして /Applications にインストール
+- `make clean` - ビルド成果物をクリーンアップ
+- `make rust-build` - Rustバイナリのみビルド
+- `make test` - バンドル構造を表示
+- `make publish` - 配布用パッケージを作成（release-macosフォルダ）
+- `make publish-release` - GitHubリリースノート付きで配布用パッケージを作成
+- `make help` - ヘルプを表示
+
+### 配布用パッケージの作成
+
+```bash
+# macOS用配布パッケージを作成
+make publish
+```
+
+作成されるファイル（`release-macos/` フォルダ内）：
+
+- `pdf_splitter_macos_v0.1.0.zip` - macOSアプリバンドル
+- `pdf_splitter_cli_v0.1.0.zip` - コマンドライン版
+- `README.md` - 配布用説明書
+- `pdf_splitter.json` - 設定ファイルサンプル
+- `LICENSE` - ライセンスファイル
+
+### 動作確認
+
+作成されたアプリバンドルは、ファイルをドラッグ&ドロップすることでPDFを分割できます。設定は `~/.pdf_splitter.json` ファイルで行います。
