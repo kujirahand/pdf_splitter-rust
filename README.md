@@ -1,6 +1,8 @@
-# pdf_splitter-rust
+# pdf_splitter / 巨大PDF分割ツール
 
 A command-line tool for splitting PDF files based on JSON configuration. You can specify how many pages each split should contain using a simple JSON configuration file.
+
+- [Download](https://github.com/kujirahand/pdf_splitter-rust/releases)
 
 ## Features
 
