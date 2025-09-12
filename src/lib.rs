@@ -114,7 +114,9 @@ mod tests {
 
     #[test]
     fn test_read_config_missing_file() {
+        let temp_dir = tempdir().unwrap();
+        let missing_path = temp_dir.path().join("nonexistent_config.json");
         // Test reading a non-existent config file
-        assert!(read_config("/tmp/nonexistent_config.json").is_err());
+        assert!(read_config(missing_path.to_str().unwrap()).is_err());
     }
 }
