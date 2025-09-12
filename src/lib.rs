@@ -36,7 +36,7 @@ pub fn split_pdf(pdf_path: &str, config: &Config) -> Result<()> {
     }
 
     let pages_per_split = config.pages as usize;
-    let num_splits = (total_pages + pages_per_split - 1) / pages_per_split;
+    let num_splits = total_pages.div_ceil(pages_per_split);
 
     println!("Splitting into {} files with {} pages each", num_splits, pages_per_split);
 
