@@ -13,7 +13,7 @@ struct Config {
     pages: usize,
 }
 
-/// 設定ファイルを読み込む関数
+/// 設定ファイル(JSONファイル)を読み込む関数
 /// 1. 実行ファイルパス.json
 /// 2. ~/.pdf_splitter.json
 /// の順番で確認する
